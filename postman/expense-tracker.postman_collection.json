@@ -1,0 +1,265 @@
+{
+  "info": {
+    "_postman_id": "6f99c6bd-c99d-4601-86f1-88b5828be16e",
+    "name": "Expense Tracker API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "54828414"
+  },
+  "item": [
+    {
+      "name": "Create Expense",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "// Visualization Script",
+              "// Visualization Script",
+              "const template = `",
+              "<style>",
+              "  body { font-family: Arial, sans-serif; padding: 16px; }",
+              "  table { border-collapse: collapse; width: 100%; }",
+              "  th, td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; }",
+              "  th { background: #f5f5f5; font-weight: 600; }",
+              "  tr:nth-child(even) { background: #fafafa; }",
+              "  a { color: #0366d6; text-decoration: none; }",
+              "  a:hover { text-decoration: underline; }",
+              "  pre { background: #f6f8fa; padding: 12px; border: 1px solid #ddd; border-radius: 4px; white-space: pre-wrap; word-break: break-word; }",
+              "</style>",
+              "{{#if isTable}}",
+              "  <table>",
+              "    <thead>",
+              "      <tr>",
+              "        <th>Resource</th>",
+              "        <th>URL</th>",
+              "      </tr>",
+              "    </thead>",
+              "    <tbody>",
+              "      {{#each rows}}",
+              "        <tr>",
+              "          <td>{{resource}}</td>",
+              "          <td><a href=\"{{url}}\" target=\"_blank\">{{url}}</a></td>",
+              "        </tr>",
+              "      {{/each}}",
+              "    </tbody>",
+              "  </table>",
+              "{{#unless isTable}}",
+              "  <pre>{{prettyJson}}</pre>",
+              "{{/unless}}",
+              "{{/if}}`;",
+              "",
+              "function createPayload() {",
+              "  let data;",
+              "",
+              "  try {",
+              "    data = pm.response.json();",
+              "  } catch (e) {",
+              "    return {",
+              "      isTable: false,",
+              "      prettyJson: pm.response.text()",
+              "    };",
+              "  }",
+              "",
+              "  const isPlainObject = data && typeof data === 'object' && !Array.isArray(data);",
+              "  const entries = isPlainObject ? Object.entries(data) : [];",
+              "  const canRenderTable = isPlainObject && entries.length > 0 && entries.every(([key, value]) => {",
+              "    const primitive = ['string', 'number', 'boolean'].includes(typeof value) || value === null;",
+              "    return typeof key === 'string' && primitive;",
+              "  });",
+              "",
+              "  if (canRenderTable) {",
+              "    return {",
+              "      isTable: true,",
+              "      rows: entries.map(([resource, url]) => ({",
+              "        resource,",
+              "        url: String(url)",
+              "      }))",
+              "    };",
+              "  }",
+              "",
+              "  return {",
+              "    isTable: false,",
+              "    prettyJson: JSON.stringify(data, null, 2)",
+              "  };",
+              "}",
+              "",
+              "pm.visualizer.set(template, createPayload());",
+              "",
+              "const response = pm.response.json();",
+              "pm.environment.set(\"expense_id\", response.id);"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"amount\": 175,\r\n  \"description\": \"Updated: rice, chicken curry, and a drink\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/expenses/\n",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "expenses",
+            "\n"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "List Expenses",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"title\": \"Lunch at university canteen\",\r\n  \"amount\": 150,\r\n  \"category\": \"food\",\r\n  \"description\": \"Rice and chicken curry\",\r\n  \"date\": \"2026-07-25T12:00:00\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/expenses/",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "expenses",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Single Expense",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/expenses/{{expense_id}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "expenses",
+            "{{expense_id}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Update Expense",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"amount\": 175,\r\n  \"description\": \"Updated: rice, chicken curry, and a drink\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/expenses/{{expense_id}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "expenses",
+            "{{expense_id}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete Expense",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/expenses/1",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "expenses",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Summary",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/expenses/summary",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "expenses",
+            "summary"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          "const response = pm.response.json();\r",
+          "pm.environment.set(\"expense_id\", response.id);"
+        ]
+      }
+    }
+  ]
+}
