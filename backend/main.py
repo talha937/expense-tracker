@@ -16,11 +16,15 @@ app = FastAPI(title="Expense Tracker", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],
+    allow_origins=[
+        "http://localhost:5173",
+        "https://expense-tracker0.up.railway.app",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 app.include_router(expenses.router, prefix="/api/expenses", tags=["expenses"])
 app.include_router(auth_router.router, prefix="/api/auth", tags=["auth"])
