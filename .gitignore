@@ -1,24 +1,37 @@
-# Ignore environment files
+# Environment files
 .env
+*.env
 backend/.env
 frontend/.env
 
-# Python
+# Python artifacts
 __pycache__/
-*.pyc
-*.pyo
+*.py[cod]
 *.pyd
-*.sqlite3
+*.so
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.venv/
+venv/
 
-# Node.js
+# Databases
+*.sqlite3
+*.db
+
+# Node.js artifacts
 node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
 
-# Build output
+# Build outputs
 dist/
 build/
+coverage/
 
-# IDE/Editor
+# OS / editor files
+.DS_Store
 .vscode/
+.idea/
